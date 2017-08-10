@@ -125,6 +125,7 @@ def fakeCompiler (args):
 
 def trace (args):
     """Generate a compilation database by tracing a build command."""
+    """This function needs strace to support"""
     command  = ["strace", "-f", "-s256", "-etrace=execve,chdir", "-q"]
     command += args.command
 
@@ -176,6 +177,7 @@ def trace (args):
 
 def scan (args):
     """Generate a compilation database by scanning a sources directory."""
+#TODO: support ycm_conf.py, you can use that file to gen database
     srcdir = args.srcdir
     clangArgs = args.clangArgs
     compiler = args.compiler
@@ -183,7 +185,7 @@ def scan (args):
     compilationDb = []
     for (root, _, files) in os.walk (srcdir):
         for fileName in files:
-            if endsWithOne (fileName, [".c", ".cxx", ".cc", ".C"]):
+            if endsWithOne (fileName.lower(), [".c", ".cxx", ".cc", ".cpp"]):
                 sourceFile = os.path.realpath (os.path.join (root, fileName))
                 command  = "%s %s" % (compiler, sourceFile)
                 command += " " + subprocess.list2cmdline(clangArgs)
