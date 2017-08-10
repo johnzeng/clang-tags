@@ -1,1 +1,17 @@
 *~
+.idea/
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+Makefile
+tests/*.out
+Testing
+clang-tags-server
+clang_tags.cbp
+cmake_install.cmake
+config.h
+fake-compiler/
+*.a
+install_manifest.txt
+test_*
+
