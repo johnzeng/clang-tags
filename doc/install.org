@@ -10,7 +10,6 @@
   - =libclang= (>= 3.0)
   - =sqlite3=
   - =socat=
-  - =strace=
   - =python= (>= 2.3)
     - a version newer than 2.7 is recommended to benefit from the more recent
       =argparse= module.
@@ -20,6 +19,7 @@
   - =git=: to get the latest version
   - =pkg-config=: helps finding other requirements
   - =emacs=: obviously required for the Emacs interface
+  - =strace=: to generate complie database
 
 
   And here are a few suggested packages:
@@ -35,6 +35,8 @@
   build and test process should be as simple as:
   
   #+begin_src sh
+    # specilfy libclang dir if you get error about libclang
+    # cmake -DLibclang_INCLUDE_DIR=/usr/local/Cellar/llvm/4.0.1/include -DLibclang_LIBRARY=/usr/local/Cellar/llvm/4.0.1/lib/libclang.dylib
     cmake path/to/sources
     make
     make test
