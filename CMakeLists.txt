@@ -52,10 +52,6 @@ set(LIBS ${LIBS} ${Libsqlite3_LIBRARIES})
 find_package (Socat REQUIRED)
 
 
-# Check for strace
-find_package (Strace REQUIRED)
-
-
 # Check for python
 find_package (PythonInterp REQUIRED)
 
