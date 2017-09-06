@@ -86,6 +86,7 @@ include ("util/CMakeLists.txt")
 
 add_executable (clang-tags-server
   main.cxx
+  storage.cxx
   request/request.cxx
   compilationDatabase.cxx
   index.cxx

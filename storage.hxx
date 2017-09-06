@@ -135,8 +135,8 @@ private:
   Sqlite::Database db_;
   /*
   Sqlite::Statement preparedDeleteFileFromCommand;
-  Sqlite::Statement preparedDeleteFileFromCommand;
-  Sqlite::Statement preparedDeleteFileFromCommand;
+  Sqlite::Statement preparedInsertIntoCommands;
+  Sqlite::Statement preparedSelectCompileCommandFromCommands;
   Sqlite::Statement preparedDeleteFileFromCommand;
   Sqlite::Statement preparedDeleteFileFromCommand;
   Sqlite::Statement preparedDeleteFileFromCommand;

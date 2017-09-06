@@ -34,10 +34,12 @@ Storage::Storage()
             "  name   TEXT, "
             "  value  TEXT "
             ")");
-    /*
-    preparedDeleteFileFromCommand = Sqlite::Statement(db_, "DELETE FROM commands "
-            "WHERE fileId=?");
-    */
+
+    //build indexes
+    db_.execute ("CREATE INDEX IF NOT EXISTS usr_offset_fileId_index ON tags (usr, offset1, offset2, fileId)");
+    db_.execute ("CREATE INDEX IF NOT EXISTS usr_index ON tags (usr)");
+    db_.execute ("CREATE INDEX IF NOT EXISTS name_index ON options (name)");
+    db_.execute ("CREATE INDEX IF NOT EXISTS name_index ON files (name)");
 }
 
 
