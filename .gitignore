@@ -1,6 +1,7 @@
 *~
 .idea/
 CMakeCache.txt
+doc/
 CMakeFiles/
 CTestTestfile.cmake
 Makefile
@@ -14,4 +15,5 @@ fake-compiler/
 *.a
 install_manifest.txt
 test_*
-
+env.*
+Doxyfile
