@@ -7,32 +7,6 @@
 #include <iostream>
 #include <cstdlib>
 
-void displayRefDef (const Storage::RefDef & refDef, std::ostream & cout)
-{
-  const Storage::Reference  & ref = refDef.ref;
-  const Storage::Definition & def = refDef.def;
-
-  // Display reference
-  {
-    SourceFile sourceFile (ref.file);
-
-    cout << "-- " << sourceFile.substring (ref.offset1, ref.offset2) << " -- "
-         << ref.kind << " " << ref.spelling
-         << std::endl;
-  }
-
-  // Display definition
-  {
-    cout << "   "
-         << def.file  << ":"
-         << def.line1 << "-" << def.line2 << ":"
-         << def.col1  << "-" << def.col2-1 << ": "
-         << def.kind  << " " << def.spelling
-         << std::endl << "   USR: " << def.usr
-         << std::endl << std::endl;
-  }
-}
-
 void outputRefDef (const Storage::RefDef & refDef, std::ostream & cout)
 {
   Json::FastWriter writer;

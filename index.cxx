@@ -64,10 +64,11 @@ public:
 
     if (needsUpdate_[fileName]) {
       const LibClang::SourceLocation::Position end = cursor.end().expansionLocation();
+      
       storage_.addTag (usr, cursor.kindStr(), cursor.spelling(), fileName,
                        begin.line, begin.column, begin.offset,
                        end.line,   end.column,   end.offset,
-                       cursor.isDeclaration());
+                       cursor.isDeclaration(), cursor.isVirtual(), cursor.getAllOverridenMethods());
     }
 
     return CXChildVisit_Recurse;

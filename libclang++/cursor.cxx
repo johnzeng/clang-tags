@@ -26,6 +26,30 @@ namespace LibClang {
     return clang_Cursor_isNull (raw());
   }
 
+  bool Cursor::isVirtual() const{
+      return clang_CXXMethod_isVirtual(raw()) != 0;
+  }
+
+  std::vector<const std::string> Cursor::getAllOverridenMethods()const
+  {
+      std::vector<const std::string> retCursors;
+      if(!isVirtual())
+      {
+          return retCursors;
+      }
+      CXCursor *ret = NULL;
+      unsigned num = 0;
+      clang_getOverriddenCursors(raw(), &ret, &num);
+      
+      for(unsigned i = 0; i < num; i++)
+      {
+          Cursor curCursor = Cursor(*(ret + i));
+          clang_disposeOverriddenCursors(ret+i);
+          retCursors.push_back(curCursor.USR());
+      }
+      return retCursors;
+  }
+
   bool Cursor::isUnexposed () const {
     return clang_isUnexposed (clang_getCursorKind(raw()));
   }

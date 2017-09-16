@@ -45,7 +45,8 @@ public:
                const std::string & fileName,
                const int line1, const int col1, const int offset1,
                const int line2, const int col2, const int offset2,
-               bool isDeclaration);
+               bool isDeclaration, bool isVirtual,
+               std::vector<const std::string> overriden_usrs);
 
   struct Reference {
     std::string file;
@@ -82,6 +83,7 @@ public:
     int col2;
     std::string kind;
     std::string spelling;
+    int isVirtual;
 
     Json::Value json () const {
       Json::Value json;
@@ -93,6 +95,7 @@ public:
       json["col2"]     = col2;
       json["kind"]     = kind;
       json["spelling"] = spelling;
+      json["isVirtual"] = isVirtual;
       return json;
     }
   };

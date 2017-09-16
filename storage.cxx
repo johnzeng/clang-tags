@@ -28,7 +28,12 @@ Storage::Storage()
             "  line2    INTEGER,"
             "  col2     INTEGER,"
             "  offset2  INTEGER,"
-            "  isDecl   BOOLEAN"
+            "  isDecl   BOOLEAN,"
+            "  isVirtual BOOLEAN"
+            ")");
+    db_.execute ("CREATE TABLE IF NOT EXISTS overriden_methods("
+            "  usr TEXT REFERENCES tags(usr),"
+            "  overriden_usr TEXT"
             ")");
     db_.execute ("CREATE TABLE IF NOT EXISTS options ( "
             "  name   TEXT, "
@@ -212,7 +217,8 @@ void Storage::addTag (const std::string & usr,
         const std::string & fileName,
         const int line1, const int col1, const int offset1,
         const int line2, const int col2, const int offset2,
-        bool isDeclaration) {
+        bool isDeclaration, bool isVirtual,
+        std::vector<const std::string> overriden_usrs) {
     int fileId = fileId_ (fileName);
     if (fileId == -1) {
         return;
@@ -226,12 +232,20 @@ void Storage::addTag (const std::string & usr,
                 "  AND offset2=?")
         .bind (fileId).bind (usr).bind (offset1).bind (offset2);
     if (stmt.step() == SQLITE_DONE) { // no matching row
-        db_.prepare ("INSERT INTO tags VALUES (?,?,?,?,?,?,?,?,?,?,?)")
+        db_.prepare ("INSERT INTO tags VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")
             .bind(fileId) .bind(usr)  .bind(kind)    .bind(spelling)
             .bind(line1)  .bind(col1) .bind(offset1)
             .bind(line2)  .bind(col2) .bind(offset2)
-            .bind(isDeclaration)
+            .bind(isDeclaration) .bind(isVirtual)
             .step();
+        if(isVirtual)
+        {
+            for(auto it = overriden_usrs.begin(); it < overriden_usrs.end(); it++)
+            {
+                db_.prepare("INSERT INTO overriden_methods VALUES(?,?)")
+                    .bind(usr).bind(*it).step();
+            }
+        }
     }
 }
 
@@ -242,7 +256,7 @@ std::vector<Storage::RefDef> Storage::findDefinition (const std::string fileName
         db_.prepare ("SELECT ref.offset1, ref.offset2, ref.kind, ref.spelling,"
                 "       def.usr, defFile.name,"
                 "       def.line1, def.line2, def.col1, def.col2, "
-                "       def.kind, def.spelling "
+                "       def.kind, def.spelling, def.isVirtual "
                 "FROM tags AS ref "
                 "INNER JOIN tags AS def ON def.usr = ref.usr "
                 "INNER JOIN files AS defFile ON def.fileId = defFile.id "
@@ -264,7 +278,7 @@ std::vector<Storage::RefDef> Storage::findDefinition (const std::string fileName
         stmt >> ref.offset1 >> ref.offset2 >> ref.kind >> ref.spelling
             >> def.usr >> def.file
             >> def.line1 >> def.line2 >> def.col1 >> def.col2
-            >> def.kind >> def.spelling;
+            >> def.kind >> def.spelling >> def.isVirtual;
         ref.file = fileName;
         ret.push_back(refDef);
     }

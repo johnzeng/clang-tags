@@ -286,6 +286,7 @@ def findDefinition (args):
                               " %(spelling)s\n"
                               % refDef["def"])
             sys.stdout.write ("   USR: %(usr)s\n" % refDef["def"])
+            sys.stdout.write ("   isVirtual: %(isVirtual)s\n" % refDef["def"])
             sys.stdout.write ("\n")
         except:
             sys.stdout.write (line)

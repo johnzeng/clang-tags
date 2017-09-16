@@ -1,6 +1,7 @@
 #pragma once
 #include <clang-c/Index.h>
 #include <string>
+#include <vector>
 
 namespace LibClang {
   /** @addtogroup libclang
@@ -72,6 +73,12 @@ namespace LibClang {
      * @return true if the cursor represents a declaration
      */
     bool isDeclaration () const;
+    
+    /** @brief Determine whether the cursor represents a virtual call or not 
+     *
+     * @return true if the cursor represents a virtual call
+     */
+    bool isVirtual () const;
 
     /** @brief Get the cursor referenced
      *
@@ -132,6 +139,8 @@ namespace LibClang {
      * @return a SourceLocation to the end of the referenced entity
      */
     SourceLocation end () const;
+
+    std::vector<const std::string> getAllOverridenMethods() const;
 
   private:
     Cursor (CXCursor raw);
