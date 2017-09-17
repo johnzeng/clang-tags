@@ -249,6 +249,37 @@ void Storage::addTag (const std::string & usr,
     }
 }
 
+std::vector<Storage::RefDef> Storage::findOverridenDefinition (const std::string fileName, const std::string usr)
+{
+    Sqlite::Statement stmt =
+        db_.prepare ("SELECT def.offset1, def.offset2, def.kind, def.spelling,"
+                "       overriden_methods.overriden_usr, defFile.name,"
+                "       def.line1, def.line2, def.col1, def.col2, "
+                "       def.kind, def.spelling, def.isVirtual "
+                "FROM overriden_methods "
+                "INNER JOIN tags AS def ON def.usr = overriden_methods.usr "
+                "INNER JOIN files AS defFile ON def.fileId = defFile.id "
+                "WHERE overriden_methods.usr = ? "
+                "GROUP BY overriden_methods.overriden_usr "
+                "ORDER BY (def.offset2 - def.offset1)")
+
+        .bind (usr);
+    std::vector<Storage::RefDef> ret;
+    while (stmt.step() == SQLITE_ROW) {
+        Storage::RefDef refDef;
+        Storage::Reference & ref = refDef.ref;
+        Definition & def = refDef.def;
+
+        stmt >> ref.offset1 >> ref.offset2 >> ref.kind >> ref.spelling
+            >> def.usr >> def.file
+            >> def.line1 >> def.line2 >> def.col1 >> def.col2
+            >> def.kind >> def.spelling >> def.isVirtual;
+        ref.file = fileName;
+        ret.push_back(refDef);
+    }
+    return ret;
+}
+
 std::vector<Storage::RefDef> Storage::findDefinition (const std::string fileName,
         int offset) {
     int fileId = fileId_ (fileName);
@@ -281,6 +312,27 @@ std::vector<Storage::RefDef> Storage::findDefinition (const std::string fileName
             >> def.kind >> def.spelling >> def.isVirtual;
         ref.file = fileName;
         ret.push_back(refDef);
+    }
+    return ret;
+}
+
+std::vector<Storage::Reference> Storage::findOverridenDefinition(const std::string usr) {
+    Sqlite::Statement stmt =
+        db_.prepare("SELECT ref.line1, ref.line2, ref.col1, ref.col2, "
+                "       ref.offset1, ref.offset2, refFile.name, ref.kind "
+                "FROM overriden_methods "
+                "INNER JOIN tags AS ref ON overriden_methods.overriden_usr = ref.usr "
+                "INNER JOIN files AS refFile ON ref.fileId = refFile.id "
+                "WHERE overriden_methods.usr = ? "
+                "GROUP BY overriden_methods.overriden_usr")
+        .bind (usr);
+
+    std::vector<Storage::Reference> ret;
+    while (stmt.step() == SQLITE_ROW) {
+        Storage::Reference ref;
+        stmt >> ref.line1 >> ref.line2 >> ref.col1 >> ref.col2
+            >> ref.offset1 >> ref.offset2 >> ref.file >> ref.kind;
+        ret.push_back (ref);
     }
     return ret;
 }

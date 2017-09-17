@@ -13,4 +13,15 @@ void Application::grep (const GrepArgs & args, std::ostream & cout) {
     json["lineContents"] = file.line (ref->line1);
     cout << writer.write (json);
   }
+
+  if(args.find_overridens)
+  {
+      const auto overridenRefDefs = storage_.findOverridenDefinition(args.usr);
+      for (auto it = overridenRefDefs.begin() ; it != overridenRefDefs.end(); it++) {
+          Json::Value json = it->json();
+          SourceFile file (it->file);
+          json["lineContents"] = file.line (it->line1);
+          cout << writer.write (json);
+      }
+  }
 }

@@ -27,7 +27,10 @@ namespace LibClang {
   }
 
   bool Cursor::isVirtual() const{
-      return clang_CXXMethod_isVirtual(raw()) != 0;
+      bool isVirtual = clang_CXXMethod_isVirtual(raw()) != 0;
+      bool isPureVirtual = clang_CXXMethod_isPureVirtual(raw()) != 0;
+      bool isVirtualBase = clang_isVirtualBase(raw()) != 0;
+      return isVirtual || isPureVirtual || isVirtualBase;
   }
 
   std::vector<const std::string> Cursor::getAllOverridenMethods()const

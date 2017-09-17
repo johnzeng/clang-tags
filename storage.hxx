@@ -115,6 +115,9 @@ public:
   std::vector<RefDef> findDefinition (const std::string fileName,
                        int offset);
 
+  std::vector<RefDef> findOverridenDefinition (const std::string fileName, const std::string usr);
+  std::vector<Reference> findOverridenDefinition(const std::string usr);
+
   std::vector<Reference> grep (const std::string usr);
 
   void setOption (const std::string & name, const std::string & value);

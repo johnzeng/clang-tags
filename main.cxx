@@ -146,10 +146,14 @@ public:
     add (key ("usr", args_.usr)
          ->metavar ("USR")
          ->description ("Unified Symbol Resolution for the symbol"));
+    add (key ("findOverridens", args_.find_overridens)
+         ->metavar ("true|false")
+         ->description ("Force grep overriden methods"));
   }
 
   void defaults () {
     args_.usr = "c:@F@main";
+    args_.find_overridens = false;
   }
 
   void run (std::ostream & cout) {

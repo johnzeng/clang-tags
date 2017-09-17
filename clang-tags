@@ -272,6 +272,7 @@ def findDefinition (args):
     request = {"command":   "find",
                "file":      fileName,
                "offset":    args.offset,
+               "mostSpecific":    args.mostSpecific,
                "fromIndex": args.fromIndex}
 
     def processOutput (line):
@@ -298,7 +299,8 @@ def grep (args):
     """Find all references to a symbol."""
 
     request = {"command": "grep",
-               "usr": args.usr}
+               "usr": args.usr,
+               "findOverridens": args.findOverridens}
 
     def processOutput (line):
         try:
@@ -504,7 +506,13 @@ def main_argparse ():
         dest = "fromIndex",
         action = "store_false",
         help = "recompile the file to find the definition")
+    s.add_argument (
+        "--most-specific", "-m",
+        dest = "mostSpecific",
+        action = "store_true",
+        help = "only return the most specific usr")
     s.set_defaults (fromIndex = True)
+    s.set_defaults (mostSpecific = False)
     s.set_defaults (fun = findDefinition)
 
 
@@ -517,6 +525,13 @@ def main_argparse ():
         "usr",
         metavar = "USR",
         help = "USR for the definition")
+    s.add_argument (
+        "--overridens", "-o",
+        dest = "findOverridens",
+        action = "store_true",
+        help = "Overridends for the usr")
+
+    s.set_defaults (findOverridens = False)
     s.set_defaults (fun = grep)
 
 

@@ -50,6 +50,7 @@ public:
 
   struct GrepArgs {
     std::string usr;
+    bool find_overridens;
   };
   void grep (const GrepArgs & args, std::ostream & cout);
 

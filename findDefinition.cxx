@@ -97,6 +97,7 @@ void Application::findDefinitionFromIndex_ (FindDefinitionArgs & args, std::ostr
   const auto end = args.mostSpecific
     ? refDef + 1
     : refDefs.end();
+
   for ( ; refDef != end ; ++refDef ) {
     outputRefDef (*refDef, cout);
   }
