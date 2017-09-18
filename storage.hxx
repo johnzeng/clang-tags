@@ -46,7 +46,7 @@ public:
                const int line1, const int col1, const int offset1,
                const int line2, const int col2, const int offset2,
                bool isDeclaration, bool isVirtual,
-               std::vector<const std::string> overriden_usrs);
+               const std::vector<std::string> overriden_usrs);
 
   struct Reference {
     std::string file;

@@ -1,7 +1,7 @@
 #pragma once
-#include <clang-c/Index.h>
-#include <string>
 #include <vector>
+#include <string>
+#include <clang-c/Index.h>
 
 namespace LibClang {
   /** @addtogroup libclang
@@ -140,7 +140,7 @@ namespace LibClang {
      */
     SourceLocation end () const;
 
-    std::vector<const std::string> getAllOverridenMethods() const;
+    std::vector<std::string> getAllOverridenMethods() const;
 
   private:
     Cursor (CXCursor raw);

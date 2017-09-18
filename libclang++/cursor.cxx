@@ -33,9 +33,9 @@ namespace LibClang {
       return isVirtual || isPureVirtual || isVirtualBase;
   }
 
-  std::vector<const std::string> Cursor::getAllOverridenMethods()const
+  std::vector<std::string> Cursor::getAllOverridenMethods()const
   {
-      std::vector<const std::string> retCursors;
+      std::vector<std::string> retCursors;
       if(!isVirtual())
       {
           return retCursors;
