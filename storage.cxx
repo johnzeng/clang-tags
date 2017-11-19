@@ -262,7 +262,6 @@ std::vector<Storage::RefDef> Storage::findOverridenDefinition (const std::string
                 "WHERE overriden_methods.usr = ? "
                 "GROUP BY overriden_methods.overriden_usr "
                 "ORDER BY (def.offset2 - def.offset1)")
-
         .bind (usr);
     std::vector<Storage::RefDef> ret;
     while (stmt.step() == SQLITE_ROW) {

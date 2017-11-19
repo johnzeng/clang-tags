@@ -93,6 +93,10 @@ private:
 
 void Application::findDefinitionFromIndex_ (FindDefinitionArgs & args, std::ostream & cout) {
   const auto refDefs = storage_.findDefinition (args.fileName, args.offset);
+  if(refDefs.size() == 0)
+  {
+      return;
+  }
   auto refDef = refDefs.begin();
   const auto end = args.mostSpecific
     ? refDef + 1
